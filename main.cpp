@@ -19,21 +19,34 @@ int main(){
   pRegion rgn;
   int count = 0;
   while ((rgn = (pRegion) RIter_next(regions))) {
+    
+    double xyz[4][3];
+    double cent[3];
+    int x = EN_coord(rgn, xyz);
+    EN_centroid	(rgn, cent);
+    
+    //Debugging
+    if (count==0){
+      for (int i=0; i<4; i++)
+        printf("Vertex coords %d %.15e %.15e %.15e \n", i, xyz[i][0], xyz[i][1], xyz[i][2]);
+      printf("Centroid %.15e %.15e %.15e \n", cent[0], cent[1], cent[2]);
+    }
     count ++;
-
   }
   RIter_delete(regions);
   std::cout<<"Count regions: "<<count<<std::endl;
 
   //Loop over vertices
+  count=0;
   VIter vertices = M_vertexIter(sm);
   pVertex vtx;
   while ((vtx = (pVertex) VIter_next(vertices))) {
      double xyz[3];
      V_coord(vtx,xyz);
+     count++;
   }
   VIter_delete(vertices);
-
+  std::cout<<"Count Vertices: "<<count<<std::endl;
 
   M_release(sm);
   GM_release(g);
